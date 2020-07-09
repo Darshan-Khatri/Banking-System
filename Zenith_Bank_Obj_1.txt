@@ -1,0 +1,80 @@
+using System;
+
+namespace Zenith_Bank_Obj
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Zenith Bank !");
+            Console.WriteLine("How can i help you today ?");
+            Console.WriteLine();
+
+            Console.WriteLine("Write you account number!");
+
+            Bank[] b = new Bank[10];
+
+
+            for (int i = 0; i < 10; i++)
+            {
+                b[i] = new Bank(100, 100);
+                if (i > 0)
+                {
+                    b[i].AccNum = b[i - 1].AccNum + 1;
+
+                }
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine("Account Number of " + (i+1) + " customer is :" + b[i].AccNum +"   Balance: "+b[i].balance +"   Last Transaction:" +b[i].lt);
+                Console.WriteLine();
+            }
+
+        }
+    }
+
+    public class Bank
+    {
+        public int AccNum = 100;
+        public double balance;
+        public double lt;
+
+        public Bank(double bal, double lT)
+        {
+            balance = bal;
+            lt = lT;
+
+        }
+
+
+        public void deposit()
+        {
+            Console.Write("Enter amount to deposit : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            balance = balance + v;
+            lt = v;
+        }
+
+        public void withdraw()
+        {
+            Console.Write("Enter amount to withdraw : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            if (v <= balance)
+            {
+                balance = balance - v;
+                lt = (-v);
+            }
+            else
+            {
+                Console.WriteLine("Oopps, You have insufficient Money in account !");
+            }
+        }
+
+        public void statement()
+        {
+            Console.WriteLine($"Total Balance :  {balance}");
+            Console.WriteLine($"Last Transaction : {lt}");
+        }
+    }
+}
