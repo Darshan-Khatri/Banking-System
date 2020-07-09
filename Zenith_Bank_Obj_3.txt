@@ -1,0 +1,104 @@
+using System;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Zenith_Bank_Obj
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to Zenith Bank !");
+            Console.WriteLine("How can i help you today ?");
+            Console.WriteLine();
+
+
+
+            createObj obj = new createObj();
+            obj.objcreate();
+            obj.searchalgo();
+        }
+    }
+
+    public class Bank
+    {
+        public int AccNum = 100;
+        public double balance;
+        public double lt;
+
+        public Bank(double bal, double lT)
+        {
+            balance = bal;
+            lt = lT;
+
+        }
+
+
+        public void deposit()
+        {
+            Console.Write("Enter amount to deposit : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            balance = balance + v;
+            lt = v;
+        }
+
+        public void withdraw()
+        {
+            Console.Write("Enter amount to withdraw : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            if (v <= balance)
+            {
+                balance = balance - v;
+                lt = (-v);
+            }
+            else
+            {
+                Console.WriteLine("Oopps, You have insufficient Money in account !");
+            }
+        }
+
+        public void statement()
+        {
+            Console.WriteLine($"Total Balance :  {balance}");
+            Console.WriteLine($"Last Transaction : {lt}");
+        }
+
+
+    }
+
+    public class createObj
+    {
+        Bank[] b = new Bank[10];
+
+        public void objcreate()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                b[i] = new Bank(100, 100);
+                if (i > 0)
+                {
+                    b[i].AccNum = b[i - 1].AccNum + 1;
+
+                }
+            }
+        }
+
+        public void searchalgo()
+        {
+            Console.Write("Write you account number: ");
+            int no = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            for (int i = 0; i < 10; i++)
+            {
+                if (no == b[i].AccNum)
+                {
+
+                    Console.WriteLine("Your Account Number: " + b[i].AccNum );
+                    Console.WriteLine("Balance: "+ b[i].balance);
+                    Console.WriteLine("Last Transaction: " + b[i].lt);
+                }
+            }
+        }
+
+    }
+}
