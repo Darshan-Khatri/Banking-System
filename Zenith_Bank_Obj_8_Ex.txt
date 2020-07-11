@@ -1,0 +1,187 @@
+using System;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Zenith_Bank_Obj
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Welcome to Zenith Bank !");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+
+
+            createObj obj = new createObj();
+            obj.objcreate();
+
+            obj.searchalgo();
+            int ret = 0;
+            string s1 = string.Empty;
+            bool flag_2 = true;
+            while (flag_2 == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Do you want to check another account details ? ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Press (Y) to continue or (Q) to exit: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                s1 = Console.ReadLine();
+                ret = validation(s1);
+                while (ret == (-1))
+                {
+                    Console.WriteLine("Do you want to check another account details ? ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Press (Y) to continue or (Q) to exit: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    s1 = Console.ReadLine();
+                    ret = validation(s1);
+                }
+                if (((s1 == "y") || (s1 == "Y")) && (ret == 1))
+                {
+                    Console.Clear();
+                    obj.searchalgo();
+                }
+                if (((s1 == "q") || (s1 == "Q")))
+                {
+                    break;
+                }
+
+            }
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Thank You for using Zenith Bank Service 0_0.");
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        private static int validation(string s)
+        {
+            try
+            {
+                s = Convert.ToString(s);
+                return 1;
+            }
+            catch
+            {
+                Console.WriteLine("Oppss, Select correct option.");
+                return -1;
+            }
+        }
+    }
+
+    public class Bank
+    {
+        public int AccNum = 100;
+        public double balance;
+        public double lt;
+
+        public Bank(double bal, double lT)
+        {
+            balance = bal;
+            lt = lT;
+
+        }
+
+
+        public void deposit()
+        {
+            Console.Write("Enter amount to deposit : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            balance = balance + v;
+            lt = v;
+        }
+
+        public void withdraw()
+        {
+            Console.Write("Enter amount to withdraw : ");
+            double v = Convert.ToDouble(Console.ReadLine());
+            if (v <= balance)
+            {
+                balance = balance - v;
+                lt = (-v);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Oopps, You have insufficient Money in account !");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+
+        public void statement()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Total Balance :  {balance}");
+            Console.WriteLine($"Last Transaction : {lt}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+
+    }
+
+    public class createObj
+    {
+        Bank[] b = new Bank[10];
+
+        public void objcreate()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                b[i] = new Bank(100, 100);
+                if (i > 0)
+                {
+                    b[i].AccNum = b[i - 1].AccNum + 1;
+
+                }
+            }
+        }
+
+        public void searchalgo()
+        {
+            Console.Write("Write you account number: ");
+            int no = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine();
+            for (int i = 0; i < 10; i++)
+            {
+                if (no == b[i].AccNum)
+                {
+                    Console.WriteLine("Your Account Number: " + b[i].AccNum);
+                    //Console.WriteLine("Balance: " + b[i].balance);
+                    //Console.WriteLine("Last Transaction: " + b[i].lt);
+                    Console.WriteLine("How can i help you today ?");
+                    bool flag = true;
+                    do
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("1. Deposit  2. Withdraw  3. Statements  4. Quit");
+                        Console.Write("Enter Appropiate number to do following Operation: ");
+                        int num = Convert.ToInt32(Console.ReadLine());
+                        switch (num)
+                        {
+                            case 1:
+                                b[i].deposit();
+                                Console.WriteLine();
+                                break;
+                            case 2:
+                                b[i].withdraw();
+                                break;
+                            case 3:
+                                b[i].statement();
+                                break;
+                            case 4:
+                                flag = false;
+                                break;
+                            default:
+                                Console.WriteLine("Oppss, Invalid Option, Try Again!");
+                                break;
+                        }
+
+                    } while (flag == true);
+
+                }
+            }
+        }
+
+    }
+}
