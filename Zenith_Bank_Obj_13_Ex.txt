@@ -1,0 +1,277 @@
+using System;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography.X509Certificates;
+
+namespace Zenith_Bank_Obj
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Welcome to Zenith Bank !");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine();
+
+
+            createObj obj = new createObj();
+            obj.objcreate();
+
+            obj.searchalgo();
+            int ret = 0;
+            string s1 = string.Empty;
+            bool flag_2 = true;
+            while (flag_2 == true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Do you want to check another account details ? ");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("Press (Y) to continue or (Q) to exit: ");
+                Console.ForegroundColor = ConsoleColor.White;
+                s1 = Console.ReadLine();
+                ret = validation(s1);
+                while (ret == (-1))
+                {
+                    Console.WriteLine("Do you want to check another account details ? ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Press (Y) to continue or (Q) to exit: ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    s1 = Console.ReadLine();
+                    ret = validation(s1);
+                }
+                if (((s1 == "y") || (s1 == "Y")) && (ret == 1))
+                {
+                    //Console.Clear();
+                    obj.searchalgo();
+                }
+                if (((s1 == "q") || (s1 == "Q")))
+                {
+                    break;
+                }
+
+            }
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Thank You for using Zenith Bank Service 0_0.");
+            Console.ForegroundColor = ConsoleColor.Black;
+        }
+        private static int validation(string s)
+        {
+            try
+            {
+                s = Convert.ToString(s);
+                return 1;
+            }
+            catch
+            {
+                Console.WriteLine("Oppss, Select correct option.");
+                return -1;
+            }
+        }
+    }
+
+    public class Bank
+    {
+        public int AccNum = 100;
+        public double balance;
+        public double lt;
+
+        public Bank(double bal, double lT)
+        {
+            balance = bal;
+            lt = lT;
+
+        }
+
+
+        public void deposit()
+        {
+            double n3 = 0;
+            string s3 = string.Empty;
+            Console.Write("Enter amount to deposit : ");
+            s3 = Console.ReadLine();
+            n3 = validation2(s3);
+            while ((n3 <= 0) || (n3 == (-1)))
+            {
+                Console.Write("Enter amount to deposit : ");
+                s3 = Console.ReadLine();
+                n3 = validation2(s3);
+            }
+            balance = balance + n3;
+            lt = n3;
+        }
+
+        public void withdraw()
+        {
+            double n4 = 0;
+            string s4 = string.Empty;
+            Console.Write("Enter amount to withdraw : ");
+            s4 = Console.ReadLine();
+            n4 = validation2(s4);
+            if (!((n4 <= 0) || (n4 == (-1))) && n4 <= balance)
+            {
+                balance = balance - n4;
+                lt = (-n4);
+            }
+            else
+            {
+                if (n4 == (-1))
+                {
+                    Console.WriteLine();
+                }
+                else
+                {
+
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Oopps, You have insufficient Money in account !");
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                while ((n4 <= 0) || (n4 == (-1)))
+                {
+                    Console.Write("Enter amount to withdraw : ");
+                    s4 = Console.ReadLine();
+                    n4 = validation2(s4);
+                    if (n4 <= balance)
+                    {
+                        balance = balance - n4;
+                        lt = (-n4);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Oopps, You have insufficient Money in account !");
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
+                }
+            }
+        }
+
+        public void statement()
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Total Balance :  {balance}");
+            Console.WriteLine($"Last Transaction : {lt}");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public double validation2(string s2)
+        {
+            double a1 = -1;
+            try
+            {
+                a1 = Convert.ToDouble(s2);
+                return a1;
+            }
+            catch
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Oppss, Enter Amount again !");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            return a1;
+        }
+    }
+
+    public class createObj
+    {
+        Bank[] b = new Bank[10];
+
+        public void objcreate()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                b[i] = new Bank(100, 100);
+                if (i > 0)
+                {
+                    b[i].AccNum = b[i - 1].AccNum + 1;
+
+                }
+            }
+        }
+
+        public void searchalgo()
+        {
+            int n2 = 0;
+            string no = string.Empty;
+            Console.Write("Write you account number: ");
+            no = Console.ReadLine();
+            n2 = validation1(no);
+            while (((n2 > 109) || (n2 < 100)) || (n2 == (-1)))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Account number {no} doesn't exists.");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("Write you account number: ");
+                no = Console.ReadLine();
+                n2 = validation1(no);
+            }
+            Console.WriteLine();
+            for (int i = 0; i < 10; i++)
+            {
+                if (n2 == b[i].AccNum)
+                {
+                    Console.WriteLine("Your Account Number: " + b[i].AccNum);
+                    Console.WriteLine("How can i help you today ?");
+                    bool flag = true;
+                    string num = string.Empty;
+                    int n1 = 0;
+                    do
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("1. Deposit  2. Withdraw  3. Statements  4. Quit");
+                        Console.Write("Enter Appropiate number to do following Operation: ");
+                        num = Console.ReadLine();
+                        n1 = validation1(num);
+                        while (n1 == (-1))
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("1. Deposit  2. Withdraw  3. Statements  4. Quit");
+                            Console.Write("Enter Appropiate number to do following Operation: ");
+                            num = Console.ReadLine();
+                            n1 = validation1(num);
+                        }
+                        switch (n1)
+                        {
+                            case 1:
+                                b[i].deposit();
+                                Console.WriteLine();
+                                break;
+                            case 2:
+                                b[i].withdraw();
+                                break;
+                            case 3:
+                                b[i].statement();
+                                break;
+                            case 4:
+                                flag = false;
+                                break;
+                            default:
+                                Console.WriteLine("Oppss, Invalid Option, Try Again!");
+                                break;
+                        }
+
+                    } while (flag == true);
+
+                }
+            }
+        }
+
+
+        public int validation1(string s2)
+        {
+            int a1 = -1;
+            try
+            {
+                a1 = Convert.ToInt32(s2);
+                return a1;
+            }
+            catch
+            {
+
+                return -1;
+
+            }
+        }
+
+    }
+}
